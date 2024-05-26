@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Registration Form</h2>
+        <form action="register.php" method="post" id="registrationForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
+CSS (Optional - for styling)
+Create a file named styles.css:
+
+css
+Copy code
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+}
+
+input {
+    margin-top: 5px;
+    padding: 8px;
+    font-size: 16px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+JavaScript (Optional - for client-side validation)
+Create a file named scripts.js:
+
+javascript
+Copy code
+document.getElementById('registrationForm').addEventListener('submit', function(event) {
+    var password = document.getElementById('password').value;
+    var confirmPassword = document.getElementById('confirm_password').value;
+
+    if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        event.preventDefault();
+    }
+});
+PHP (back-end)
+Create a file named register.php:
+
+php
+Copy code
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Capture form data
+    $username = htmlspecialchars($_POST['username']);
+    $email = htmlspecialchars($_POST['email']);
+    $password = htmlspecialchars($_POST['password']);
+    $confirm_password = htmlspecialchars($_POST['confirm_password']);
+
+    // Server-side validation
+    if ($password !== $confirm_password) {
+        echo "Passwords do not match.";
+        exit();
+    }
+
+    // Hash the password for security
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    // Save the user data (you should use a database, this is just for demonstration)
+    $filename = 'users.txt';
+    $user_data = "$username,$email,$hashed_password\n";
+    file_put_contents($filename, $user_data, FILE_APPEND);
+
+    echo "Registration successful!";
+}
+?>
